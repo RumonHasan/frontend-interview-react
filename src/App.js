@@ -5,6 +5,7 @@ import { test_items } from './extras';
 const App = () => {
   const questions = test_items;
   const [questionObject, setQuestionObject] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   // to get questions by category
   useEffect(()=>{
@@ -12,11 +13,13 @@ const App = () => {
         questions.forEach((question)=>{
             setQuestionObject((prevQuestionObject)=>{
                 if(prevQuestionObject.hasOwnProperty(question.category)){
+                    const oldQuestions = [...prevQuestionObject[question.category]];
                     return {
                         ...prevQuestionObject,
-                        [question.category]: prevQuestionObject[question.category].push(question)
+                        [question.category]: [...oldQuestions, question]
                     }
                 }else{
+                    // adds the question array to the new category inserted
                     return {
                         ...prevQuestionObject,
                         [question.category]: [question]
@@ -28,10 +31,11 @@ const App = () => {
     getQuestionsByCategory();
   },[]);
 
-  console.log(questionObject);
 
   return (
-    <div>App</div>
+    <div className='list-container'>
+
+    </div>
   )
 };
 
