@@ -1,25 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import React,{useEffect, useState} from 'react';
+import './style.css';
+import { test_items } from './extras';
 
-function App() {
+const App = () => {
+  const questions = test_items;
+  const [questionObject, setQuestionObject] = useState({});
+
+  // to get questions by category
+  useEffect(()=>{
+    const getQuestionsByCategory = ()=>{
+        questions.forEach((question)=>{
+            setQuestionObject((prevQuestionObject)=>{
+                if(prevQuestionObject.hasOwnProperty(question.category)){
+                    return {
+                        ...prevQuestionObject,
+                        [question.category]: prevQuestionObject[question.category].push(question)
+                    }
+                }else{
+                    return {
+                        ...prevQuestionObject,
+                        [question.category]: [question]
+                    }
+                }
+            })
+        })
+    }
+    getQuestionsByCategory();
+  },[]);
+
+  console.log(questionObject);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+    <div>App</div>
+  )
+};
 
 export default App;
